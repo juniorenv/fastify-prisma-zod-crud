@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { CreateUserRequest, GetUserIdRequest, ReplaceUserRequest, UpdateUserRequest } from "types/requests.interface.js";
+import { CreateUserRequest, GetUserIdRequest, ReplaceUserRequest, UpdateUserRequest } from "types/request.interface.js";
 import { CreateUser, UpdateUser } from "types/user.interface.js";
 import { UserUseCase } from "usecases/user.usecase.js";
 import { z } from "zod";
