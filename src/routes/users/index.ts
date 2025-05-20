@@ -27,7 +27,7 @@ export default async function userRoutes(app: FastifyInstance) {
                 ? await userUseCase.getUser(userId)
                 : await userUseCase.listAllUsers()
 
-            return reply.send(result);
+            return reply.status(200).send(result);
         } catch (err) {
             return reply.send(err);
         }
@@ -39,7 +39,7 @@ export default async function userRoutes(app: FastifyInstance) {
             
             const result = await userUseCase.registerUser({ name, email, password });
 
-            return reply.send({
+            return reply.status(201).send({
                 message: "User successfully created",
                 data: result
             });
@@ -55,7 +55,7 @@ export default async function userRoutes(app: FastifyInstance) {
 
             const result = await userUseCase.updateUserAccount(userId, { name, email, password })
             
-            return reply.send({
+            return reply.status(200).send({
                 message: "User successfully updated",
                 data: result
             });
@@ -71,7 +71,7 @@ export default async function userRoutes(app: FastifyInstance) {
 
             const result = await userUseCase.replaceUserAccount(userId, { name, email, password })
             
-            return reply.send({
+            return reply.status(200).send({
                 message: "User successfully replaced",
                 data: result
             });
@@ -84,7 +84,7 @@ export default async function userRoutes(app: FastifyInstance) {
         try {
             const userRemoved = await userUseCase.removeUser(req.params.userId);
             
-            return reply.send({
+            return reply.status(200).send({
                 message: "User successfully removed",
                 data: userRemoved
             });
