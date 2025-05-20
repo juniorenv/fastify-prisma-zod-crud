@@ -1,5 +1,6 @@
 import { CreateUser, UpdateUser, UserRepositorySchema, User, ReplaceUser } from "types/user.interface.js";
 import { UserRepository } from "repositories/user.repository.js";
+import { compare, hash } from "bcrypt";
 
 export class UserUseCase {
     private userRepository: UserRepositorySchema;
@@ -24,8 +25,10 @@ export class UserUseCase {
         if (userEmailAlreadyExists) {
             throw new Error("User already exists");
         }
+
+        const hashedPassword = await hash(password, 10);
         
-        const newUser = this.userRepository.createUser({ name, email, password });
+        const newUser = this.userRepository.createUser({ name, email, password: hashedPassword });
 
         return newUser;
     }
