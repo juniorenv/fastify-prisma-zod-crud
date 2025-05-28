@@ -12,7 +12,9 @@ export type CreateUser = UserInput;
 
 export type UpdateUser = Partial<UserInput>;
 
-export type ReplaceUser = UserInput; 
+export type ReplaceUser = UserInput;
+
+export type LoginUser = Pick<User, "email" | "password">;
 
 export interface UserRepositorySchema {
     createUser(user: CreateUser): Promise<User>;

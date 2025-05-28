@@ -1,4 +1,4 @@
-import { ReplaceUser, UpdateUser } from "./user.interface.js";
+import { LoginUser, ReplaceUser, UpdateUser } from "./user.interface.js";
 
 export interface UpdateUserRequest {
     Body: UpdateUser,
@@ -12,6 +12,10 @@ export interface ReplaceUserRequest {
     Params: {
         userId: string
     }
+};
+
+export interface LoginUserRequest {
+    Body: LoginUser
 };
 
 export type CreateUserRequest = Omit<UpdateUserRequest, "Params">;
