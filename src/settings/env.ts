@@ -1,9 +1,21 @@
 import { z } from "zod";
 
+const envPreprocess = (value: unknown) => value === "" ? undefined : value;
+
 const envSchema = z.object({
-    HOST: z.string().default("0.0.0.0"),
-    PORT: z.number({ coerce: true }).default(3000),
-    JWT_SECRET: z.string().default("mysecret"),
+    HOST: z.preprocess(
+        envPreprocess,
+        z.string().default("0.0.0.0")),
+
+    PORT: z.preprocess(
+        envPreprocess,
+        z.number({ coerce: true }).default(3000)
+    ),
+
+    JWT_SECRET: z.preprocess(
+        envPreprocess,
+        z.string().default("mysecret")
+    ),
 });
 
 type EnvFile = z.infer<typeof envSchema>;
