@@ -3,6 +3,8 @@ import autoLoad from "@fastify/autoload";
 import { join } from "node:path";
 import "./settings/env.js";
 import { zodErrorHandler } from "functions/error.js";
+import fastifyCors from "@fastify/cors";
+import fastifyJwt from "@fastify/jwt";
 
 const app = Fastify({
     logger: {
@@ -14,6 +16,14 @@ const app = Fastify({
 
 const { HOST, PORT } = process.env;
 
+app.register(fastifyCors, {
+    origin: "*"
+});
+
+app.register(fastifyJwt, {
+    secret: process.env.JWT_SECRET
+});
+
 app.setErrorHandler(zodErrorHandler);
 
 app.register(autoLoad, {
@@ -23,7 +33,7 @@ app.register(autoLoad, {
 });
 
 app.addHook("onRoute", async ({ method, path }) => {
-    if (method === "HEAD") return;
+    if (method === "HEAD" || method === "OPTIONS") return;
     console.log(`${method} ${path}`);
 })
 
