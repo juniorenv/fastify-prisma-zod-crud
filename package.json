@@ -5,7 +5,7 @@
   "description": "TypeScript API with Fastify, Prisma and Zod validation",
   "main": "dist/server.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "dev": "tsx --env-file=.env --watch src/server.ts",
     "start": "node --env-file=.env ."
   },
@@ -17,6 +17,7 @@
     "@types/node": "^22.9.0",
     "pino-pretty": "^13.0.0",
     "prisma": "^6.7.0",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   },
