@@ -33,7 +33,7 @@ export default async function userRoutes(app: FastifyInstance) {
         }
     })
 
-    app.post("/create", async (req: FastifyRequest<CreateUserRequest>, reply: FastifyReply) => {
+    app.post("/", async (req: FastifyRequest<CreateUserRequest>, reply: FastifyReply) => {
         try {
             const { name, email, password } = userZodSchema.parse(req.body);
             
