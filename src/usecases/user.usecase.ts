@@ -35,8 +35,14 @@ export class UserUseCase {
     
     public async updateUserAccount(id: string, partialUser: UpdateUser): Promise<User> {
         await this.getUser(id); // check if user exists
-        
-        const updatedUser = await this.userRepository.updateUser(id, partialUser);
+
+        const dataToUpdate = { ...partialUser };
+
+        if (partialUser.password) {
+            dataToUpdate.password = await hash(partialUser.password, 10);
+        }
+
+        const updatedUser = await this.userRepository.updateUser(id, dataToUpdate);
         
         return updatedUser;
     }
@@ -44,7 +50,10 @@ export class UserUseCase {
     public async replaceUserAccount(id: string, user: ReplaceUser): Promise<User> {
         await this.getUser(id);
 
-        const replacedUser = await this.userRepository.updateUser(id, user);
+        const replacedUser = await this.userRepository.updateUser(id, {
+            ...user,
+            password: await hash(user.password, 10)
+        });
         
         return replacedUser;
     }
