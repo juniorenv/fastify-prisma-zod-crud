@@ -2,6 +2,13 @@ import { CreateUser, UpdateUser, UserRepositorySchema, User, ReplaceUser } from 
 import { UserRepository } from "repositories/user.repository.js";
 import { compare, hash } from "bcrypt";
 
+export class UserNotFoundError extends Error {
+    constructor(id: string) {
+        super(`No user found with id: ${id}`)
+        this.name = "UserNotFoundError"
+    }
+}
+
 export class UserUseCase {
     private userRepository: UserRepositorySchema;
 
@@ -13,7 +20,7 @@ export class UserUseCase {
         const user = await this.userRepository.findUserById(id);
         
         if (!user) {
-            throw new Error(`No user found with id: ${id}`);
+            throw new UserNotFoundError(id);
         }
         
         return user;
