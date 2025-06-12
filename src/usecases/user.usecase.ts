@@ -1,4 +1,4 @@
-import { CreateUser, UpdateUser, UserRepositorySchema, User, ReplaceUser } from "types/user.interface.js";
+import { CreateUser, UpdateUser, UserRepositorySchema, User, ReplaceUser, LoginUser } from "types/user.interface.js";
 import { UserRepository } from "repositories/user.repository.js";
 import { compare, hash } from "bcrypt";
 
@@ -77,5 +77,21 @@ export class UserUseCase {
         const usersArray = await this.userRepository.findAllUsers();
 
         return usersArray;
+    }
+
+    public async authenticateUser({ email, password }: LoginUser): Promise<User> {
+        const user = await this.userRepository.findUserByEmail(email);
+        
+        if (!user) {
+            throw new Error("Invalid user credentials");
+        }
+        
+        const passwordMatch = await compare(password, user.password);
+        
+        if (!passwordMatch) {
+            throw new Error("Invalid user credentials");
+        }
+        
+        return user;
     }
 }
