@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { CreateUserRequest, GetUserIdRequest, ReplaceUserRequest, UpdateUserRequest } from "types/request.interface.js";
 import { CreateUser, UpdateUser } from "types/user.interface.js";
-import { UserUseCase } from "usecases/user.usecase.js";
+import { UserNotFoundError, UserUseCase } from "usecases/user.usecase.js";
 import { z } from "zod";
 
 export default async function userRoutes(app: FastifyInstance) {
@@ -29,6 +29,11 @@ export default async function userRoutes(app: FastifyInstance) {
 
             return reply.status(200).send(result);
         } catch (err) {
+            if (err instanceof UserNotFoundError) {
+                return reply.status(404).send({ 
+                    error: "Not Found",
+                    message: err.message})
+            }
             return reply.send(err);
         }
     })
@@ -60,6 +65,11 @@ export default async function userRoutes(app: FastifyInstance) {
                 data: result
             });
         } catch (err) {
+            if (err instanceof UserNotFoundError) {
+                return reply.status(404).send({ 
+                    error: "Not Found",
+                    message: err.message})
+            }
             return reply.send(err);
         }
     })
@@ -76,6 +86,11 @@ export default async function userRoutes(app: FastifyInstance) {
                 data: result
             });
         } catch (err) {
+            if (err instanceof UserNotFoundError) {
+                return reply.status(404).send({ 
+                    error: "Not Found",
+                    message: err.message})
+            }
             return reply.send(err);
         }
     })
@@ -89,6 +104,11 @@ export default async function userRoutes(app: FastifyInstance) {
                 data: userRemoved
             });
         } catch (err) {
+            if (err instanceof UserNotFoundError) {
+                return reply.status(404).send({ 
+                    error: "Not Found",
+                    message: err.message})
+            }
             return reply.send(err);
         }
     })
