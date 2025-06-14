@@ -19,6 +19,22 @@ export default async function userRoutes(app: FastifyInstance) {
         password: z.string().min(3).optional(),
     }) satisfies z.ZodType<UpdateUser>
 
+    const ensureAuthenticated = async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            await req.jwtVerify();
+        } catch (err) {
+            return reply.status(401).send(err);
+        }
+    }
+    
+    const ensureOwnership = async (req: FastifyRequest<GetUserIdRequest>, reply: FastifyReply) => {
+        if (req.user.id !== req.params.userId) {
+            return reply.status(403).send({
+                error: "Forbidden",
+                message:"You can only modify your own account."});
+        }
+    }
+
     app.get("/:userId?", async(req: FastifyRequest<GetUserIdRequest>, reply: FastifyReply) => {
         try {
             const { userId } = req.params;
