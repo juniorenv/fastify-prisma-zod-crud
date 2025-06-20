@@ -35,7 +35,7 @@ export default async function userRoutes(app: FastifyInstance) {
         }
     }
 
-    app.get("/:userId?", async(req: FastifyRequest<GetUserIdRequest>, reply: FastifyReply) => {
+    app.get<GetUserIdRequest>("/:userId?", { preHandler: [ensureAuthenticated] }, async(req: FastifyRequest<GetUserIdRequest>, reply: FastifyReply) => {
         try {
             const { userId } = req.params;
             
@@ -69,7 +69,7 @@ export default async function userRoutes(app: FastifyInstance) {
         }
     })
     
-    app.patch("/:userId", async (req: FastifyRequest<UpdateUserRequest>, reply: FastifyReply) => {
+    app.patch<UpdateUserRequest>("/:userId", { preHandler: [ensureAuthenticated, ensureOwnership] }, async (req: FastifyRequest<UpdateUserRequest>, reply: FastifyReply) => {
         try {
             const { userId } = req.params;
             const { name, email, password } = partialUserZodSchema.parse(req.body);
@@ -90,7 +90,7 @@ export default async function userRoutes(app: FastifyInstance) {
         }
     })
     
-    app.put("/:userId", async (req: FastifyRequest<ReplaceUserRequest>, reply: FastifyReply) => {
+    app.put<ReplaceUserRequest>("/:userId", { preHandler: [ensureAuthenticated, ensureOwnership] }, async (req: FastifyRequest<ReplaceUserRequest>, reply: FastifyReply) => {
         try {
             const { userId } = req.params;
             const { name, email, password } = userZodSchema.parse(req.body);
@@ -111,7 +111,7 @@ export default async function userRoutes(app: FastifyInstance) {
         }
     })
 
-    app.delete("/:userId", async (req: FastifyRequest<GetUserIdRequest>, reply: FastifyReply) => {
+    app.delete<GetUserIdRequest>("/:userId", { preHandler: [ensureAuthenticated, ensureOwnership] }, async (req: FastifyRequest<GetUserIdRequest>, reply: FastifyReply) => {
         try {
             const userRemoved = await userUseCase.removeUser(req.params.userId);
             
