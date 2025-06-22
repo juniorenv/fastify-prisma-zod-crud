@@ -35,6 +35,23 @@ export default async function userRoutes(app: FastifyInstance) {
         }
     }
 
+    app.get("/me", { preHandler: [ensureAuthenticated] }, async(req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const { id } = req.user;
+            
+            const user = await userUseCase.getUser(id);
+
+            return reply.status(200).send(user);
+        } catch (err) {
+            if (err instanceof UserNotFoundError) {
+                return reply.status(404).send({ 
+                    error: "Not Found",
+                    message: err.message})
+            }
+            return reply.send(err);
+        }
+    })
+
     app.get<GetUserIdRequest>("/:userId?", { preHandler: [ensureAuthenticated] }, async(req: FastifyRequest<GetUserIdRequest>, reply: FastifyReply) => {
         try {
             const { userId } = req.params;
