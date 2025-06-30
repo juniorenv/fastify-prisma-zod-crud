@@ -6,8 +6,6 @@ import { zodErrorHandler } from "functions/error.js";
 import fastifyCors from "@fastify/cors";
 import fastifyJwt from "@fastify/jwt";
 
-console.log(process.env.NODE_ENV);
-
 const loggerConfig = process.env.NODE_ENV == "production"
     ? true
     : {
