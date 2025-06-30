@@ -6,12 +6,18 @@ import { zodErrorHandler } from "functions/error.js";
 import fastifyCors from "@fastify/cors";
 import fastifyJwt from "@fastify/jwt";
 
-const app = Fastify({
-    logger: {
+console.log(process.env.NODE_ENV);
+
+const loggerConfig = process.env.NODE_ENV == "production"
+    ? true
+    : {
         transport: {
             target: "pino-pretty"
         }
     }
+
+const app = Fastify({
+    logger: loggerConfig
 });
 
 const { HOST, PORT } = process.env;
