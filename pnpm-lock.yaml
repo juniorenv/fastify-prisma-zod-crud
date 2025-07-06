@@ -26,6 +26,9 @@ importers:
       fastify:
         specifier: ^5.2.1
         version: 5.2.1
+      prisma:
+        specifier: 6.7.0
+        version: 6.7.0(typescript@5.6.3)
       zod:
         specifier: ^3.25.67
         version: 3.25.67
@@ -39,9 +42,6 @@ importers:
       pino-pretty:
         specifier: ^13.0.0
         version: 13.0.0
-      prisma:
-        specifier: ^6.7.0
-        version: 6.7.0(typescript@5.6.3)
       tsc-alias:
         specifier: ^1.8.16
         version: 1.8.16
