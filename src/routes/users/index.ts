@@ -10,7 +10,7 @@ export default async function userRoutes(app: FastifyInstance) {
     const userZodSchema = z.object({
         name: z.string().min(3, "Name must contain at least 3 character(s)"),
         email: z.string().email("Invalid email format"),
-        password: z.string().min(3),
+        password: z.string().min(3, "Password must be at least 3 characters"),
     }) satisfies z.ZodType<CreateUser>
 
     const partialUserZodSchema = z.object({
