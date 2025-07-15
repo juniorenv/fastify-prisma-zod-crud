@@ -30,7 +30,7 @@ export class UserUseCase {
         const userEmailAlreadyExists = await this.userRepository.findUserByEmail(email);
         
         if (userEmailAlreadyExists) {
-            throw new Error("User already exists");
+            throw new Error("Email already registered");
         }
 
         const hashedPassword = await hash(password, 10);
@@ -41,9 +41,16 @@ export class UserUseCase {
     }
     
     public async updateUserAccount(id: string, partialUser: UpdateUser): Promise<User> {
-        await this.getUser(id); // check if user exists
+        const currentUser: User = await this.getUser(id); // check if user exists
 
         const dataToUpdate = { ...partialUser };
+
+        if (partialUser.email && partialUser.email != currentUser.email) {
+            const emailExists = await this.userRepository.findUserByEmail(partialUser.email);
+            if (emailExists) {
+                throw new Error("Email already registered");
+            }
+        }
 
         if (partialUser.password) {
             dataToUpdate.password = await hash(partialUser.password, 10);
@@ -55,7 +62,14 @@ export class UserUseCase {
     }
 
     public async replaceUserAccount(id: string, user: ReplaceUser): Promise<User> {
-        await this.getUser(id);
+        const currentUser: User = await this.getUser(id);
+
+        if (user.email != currentUser.email) {
+            const emailExists = await this.userRepository.findUserByEmail(user.email);
+            if (emailExists) {
+                throw new Error("Email already registered");
+            }
+        }
 
         const replacedUser = await this.userRepository.updateUser(id, {
             ...user,
@@ -83,13 +97,13 @@ export class UserUseCase {
         const user = await this.userRepository.findUserByEmail(email);
         
         if (!user) {
-            throw new Error("Invalid user credentials");
+            throw new Error("Invalid email or password");
         }
         
         const passwordMatch = await compare(password, user.password);
         
         if (!passwordMatch) {
-            throw new Error("Invalid user credentials");
+            throw new Error("Invalid email or password");
         }
         
         return user;
