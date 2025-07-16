@@ -12,6 +12,7 @@ const envSchema = z.object({
         z.number({ coerce: true }).default(3000)
     ),
 
+    // Note: Default secret for demo only - use env variable in production 
     JWT_SECRET: z.preprocess(
         envPreprocess,
         z.string().default("mysecret")

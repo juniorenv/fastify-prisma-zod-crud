@@ -71,7 +71,7 @@ export class UserUseCase {
             }
         }
 
-        const replacedUser = await this.userRepository.updateUser(id, {
+        const replacedUser = await this.userRepository.replaceUser(id, {
             ...user,
             password: await hash(user.password, 10)
         });
