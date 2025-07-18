@@ -1,0 +1,29 @@
+services:
+  api:
+    build:
+      context: .
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: ".env"
+    ports:
+      - "3000:3000"
+    networks:
+      - api-network
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_PASSWORD: 123
+      POSTGRES_USER: pguser
+      POSTGRES_DB: testdb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pguser -d testdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - api-network
+
+networks:
+  api-network:
