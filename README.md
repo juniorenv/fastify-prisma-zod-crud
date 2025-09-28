@@ -55,7 +55,7 @@ Make sure you have the following installed:
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/srlightt/fastify-prisma-zod-crud.git
+git clone https://github.com/juniorenv/fastify-prisma-zod-crud.git
 cd fastify-prisma-zod-crud
 ```
 
@@ -100,7 +100,7 @@ pnpm run dev
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/srlightt/fastify-prisma-zod-crud.git
+git clone https://github.com/juniorenv/fastify-prisma-zod-crud.git
 cd fastify-prisma-zod-crud
 ```
 
